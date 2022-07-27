@@ -1,6 +1,7 @@
 import express from "express";
 import auth from "./auth";
 import dotenv from "dotenv";
+import api from "./api";
 
 dotenv.config();
 
@@ -9,6 +10,7 @@ const port = 3000;
 
 app.use(express.json());
 app.use("/auth", auth);
+app.use("/api", api);
 
 const { sequelize } = require("../models");
 
