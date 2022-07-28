@@ -4,8 +4,11 @@ import { Pet } from '../../models';
 import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { verifyToken } from "./token";
+import emailsame from "./emailsame";
 
 const router = express.Router();
+
+router.use("/emailsame", emailsame);
 
 // 회원가입
 router.post("/register", async (req, res) => {
@@ -57,9 +60,9 @@ router.post("/register", async (req, res) => {
         })
     };
     
-    return res.json({
-        data : "이미 존재하는 아이디 입니다."
-    })
+    return res.status(409).json({
+        error : "이미 존재하는 아이디 입니다."
+    });
 });
 
 // 로그인
@@ -92,14 +95,14 @@ router.post("/login", async (req, res) => {
             });
         }
         else if (same == false) {
-            return res.json({
-                data : "아이디 또는 비밀번호가 틀렸습니다."
+            return res.status(401).json({
+                error : "아이디 또는 비밀번호가 틀렸습니다."
             });
         };  
     };
     
-    return res.json({
-        data : "아이디가 존재하지 않습니다."
+    return res.status(409).json({
+        error : "아이디가 존재하지 않습니다."
     });
 });
 
@@ -119,7 +122,7 @@ router.post("/dogdata", verifyToken, async (req, res) => {
     });
 
     if(userIdCheck.length != 0) {
-        const newUser = await Pet.create({
+        const newPet = await Pet.create({
             pet_name : pet_name,
             age : age,
             weight : weight,
@@ -138,7 +141,9 @@ router.post("/dogdata", verifyToken, async (req, res) => {
 });
 
 //------------------강아지 정보 수정----------------------
-router.put("/dogdata", verifyToken, async (req, res) => {
+router.put("/dogdata/:petId", verifyToken, async (req, res) => {
+    try {
+    const { petId } = req.params;
     const pet_name = req.body.pet_name;
     const weight = req.body.weight;
     const age = req.body.age;
@@ -146,35 +151,35 @@ router.put("/dogdata", verifyToken, async (req, res) => {
     const note = req.body.note;
     const user_id = req.decoded.id;
 
-    const userIdCheck = await User.findAll({
-        where:{
-            id : user_Id
-        }
-    });
-
     const petIdCheck = await Pet.findAll({
         where:{
-            id : id
+            user_id : user_id
         }
     });
 
-    if(userIdCheck.length != 0) {
-        const newUser = await Pet.update({
+    if(petIdCheck.length != 0) {
+        const newPet = await Pet.update({
             pet_name : pet_name,
             age : age,
             weight : weight,
             dog_breed : dog_breed,
             note : note
+        }, {
+            where : {
+                id : petIdCheck[parseInt(petId)-1].id
+            }
         });
         return res.json({
             data : "강아지 정보가 수정되었습니다."
         });
     };
-
-    return res.json({
-        error : "수정오류"
-    });
+    }
+    catch(error) {
+        return res.status(409).json({
+            error : "수정오류"
+        });
+    }
+    
 });
-
 
 export default router;
