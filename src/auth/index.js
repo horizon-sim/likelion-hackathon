@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import emailsame from "./emailsame";
 import dogdata from "./dogdata";
-
+import { petImgUrl } from "./dogdata";
 
 
 const router = express.Router();
@@ -55,6 +55,7 @@ router.post("/register", async (req, res) => {
             weight : weight,
             dogBreed : dogBreed,
             note : note,
+            petImg : petImgUrl,
             userId : dbIdCheck.length + 1
         });
         

@@ -11,29 +11,32 @@ const upload = multer({
     dest: "img/"
 });
 
-router.post("/imgadd", verifyToken, upload.single("pet_img"), async (req, res) => {
-    
-    const userId = req.decoded.id;
+const petImgUrl = ""
+
+router.post("/imgadd", upload.single('petimg'), async (req, res) => {
+
     const petImg = req.file;
-    
-    
-    console.log(petImg.filename);
+    // const userId = req.decoded.id;
+ 
+    const petImgUrl = petImg.filename;
+    console.log(petImg);
+    console.log(petImgUrl);
 
-    const userIdCheck = await User.findAll({
-        where:{
-            id : userId
-        }
-    });
+    // const userIdCheck = await User.findAll({
+    //     where:{
+    //         id : userId
+    //     }
+    // });
 
-    if(userIdCheck.length != 0) {
-        const newPet = await Pet.create({
-            petImg : petImg.filename,
-            userId : userId
-        });
+    // if(userIdCheck.length != 0) {
+    //     const newPet = await Pet.create({
+    //         petImg : petImg.filename,
+    //         // userId : userId
+    //     });
         return res.json({
             data : "사진이 업로드 되었습니다."
         });
-    };
+    // };
 
     return res.json({
         error : "등록오류"
@@ -49,7 +52,6 @@ router.post("/", verifyToken, async (req, res) => {
     const dogBreed = req.body.dogBreed;
     const note = req.body.note;
     const userId = req.decoded.id;
-    
 
     const userIdCheck = await User.findAll({
         where:{
