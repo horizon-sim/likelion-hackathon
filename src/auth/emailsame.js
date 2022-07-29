@@ -7,14 +7,14 @@ const router = express.Router();
 router.post("/", async (req, res) => {
     const email = req.body.email;
     
-    const idcheck = await User.findAll({
+    const idCheck = await User.findAll({
         attributes:["email"],
         where:{
             email : email
         }
     });
 
-    if (idcheck.length == 0) {
+    if (idCheck.length == 0) {
         return res.json({
             data : "아이디 사용가능"
         });

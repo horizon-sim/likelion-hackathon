@@ -12,19 +12,19 @@ const router = express.Router();
 
 // 지점(상세정보 데이터 넣기)
 router.post("/", verifyToken, async (req, res) => {
-    const shop_name = req.body.shop_name;
-    const work_time = req.body.work_time;//영업시간
-    const shop_num = req.body.shop_num;//shop 전화번호
-    const designer_num = req.body.designer_num;//디자이너 몇명인지
-    const work_name = req.body.work_name; // 사업자
+    const shopName = req.body.shopName;
+    const workTime = req.body.workTime;//영업시간
+    const shopNum = req.body.shopNum;//shop 전화번호
+    const designerNum = req.body.designerNum;//디자이너 몇명인지
+    const workName = req.body.workName; // 사업자
     const address = req.body.address;
     // const shop_img = req.body.shop_img;
-    const user_id = req.decoded.id;
+    const userId = req.decoded.id;
 
     
     const userIdCheck = await User.findAll({
         where:{
-            id : user_id
+            id : userId
         }
     });
 
@@ -35,7 +35,7 @@ router.post("/", verifyToken, async (req, res) => {
         designer_num : req.body.designer_num,
         work_name : req.body.work_name,
         address : req.body.address,
-        user_id : user_id
+        userId : userId
     });
     return res.json({
         data : "지점이 등록되었습니다."
@@ -86,7 +86,7 @@ router.post("/", verifyToken, async (req, res) => {
 router.get("/", async (req, res) => {
 
     const shopList = await Shop.findAll({
-        attributes: ["shop_name", "work_time", "shop_num", "address", "shop_img"]
+        attributes: ["shopName", "workTime", "shopNum", "address", "shopImg"]
     });
 
     if (shopList.length == 0) {

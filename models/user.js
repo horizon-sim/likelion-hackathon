@@ -4,13 +4,13 @@ module.exports = class User extends Sequelize.Model{
     static init(sequelize){
         return super.init({
 			
-            user_name: {
+            userName: {
                 type: Sequelize.STRING(500)
             },
             password: {
                 type: Sequelize.STRING(500)
             },
-            phone_num: {
+            phoneNum: {
                 type: Sequelize.STRING(500)
             },
             email: {
@@ -19,7 +19,7 @@ module.exports = class User extends Sequelize.Model{
             img: {
                 type: Sequelize.STRING(500)
             },
-            isowner: {
+            isOwner: {
                 type: Sequelize.BOOLEAN(1)
             }
 		}, {
@@ -33,7 +33,7 @@ module.exports = class User extends Sequelize.Model{
         });
     }
     static associate(db){
-        db.User.hasMany(db.Pet, {foreignKey: 'user_id', targetKey: 'id'});
-        db.User.hasMany(db.Shop, {foreignKey: 'user_id', targetKey: 'id'});
+        db.User.hasMany(db.Pet, {foreignKey: 'userId', targetKey: 'id'});
+        db.User.hasMany(db.Shop, {foreignKey: 'userId', targetKey: 'id'});
     }
 };

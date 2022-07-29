@@ -14,45 +14,45 @@ router.use("/emailsame", emailsame);
 router.post("/register", async (req, res) => {
     
     // 유저
-    const user_name = req.body.user_name;
+    const userName = req.body.userName;
     const password = req.body.password;
-    const phone_num = req.body.phone_num;
+    const phoneNum = req.body.phoneNum;
     const email = req.body.email;
 
-    let isowner = false;
+    let isOwner = false;
 
     // 펫
-    const pet_name = req.body.pet_name;
+    const petName = req.body.petName;
     const weight = req.body.weight;
     const age = req.body.age;
-    const dog_breed = req.body.dog_breed;
+    const dogBreed = req.body.dogBreed;
     const note = req.body.note;
 
 
-    const dbcheck = await User.findAll({
+    const dbCheck = await User.findAll({
         where:{
             email : email
         }
     });
 
-    const dbIdcheck = await User.findAll({});
+    const dbIdCheck = await User.findAll({});
 
-    if(dbcheck.length == 0) {
+    if(dbCheck.length == 0) {
         let bypassword = await bcrypt.hash(password, 1);
         const newUser = await User.create({
-            user_name : user_name,
+            userName : userName,
             password : bypassword,
-            phone_num : phone_num,
+            phoneNum : phoneNum,
             email : email,
-            isowner : isowner
+            isOwner : isOwner
         });
         const newPet = await Pet.create({
-            pet_name : pet_name,
+            petName : petName,
             age : age,
             weight : weight,
-            dog_breed : dog_breed,
+            dogBreed : dogBreed,
             note : note,
-            user_id : dbIdcheck.length + 1
+            userId : dbIdCheck.length + 1
         });
         
         return res.json({
@@ -71,18 +71,18 @@ router.post("/login", async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    const dbcheck = await User.findAll({
+    const dbCheck = await User.findAll({
         where:{
             email : email
         }
     });
 
-    if(dbcheck.length == 1) {
-        const same = bcrypt.compareSync(password, dbcheck[0].password);
+    if(dbCheck.length == 1) {
+        const same = bcrypt.compareSync(password, dbCheck[0].password);
         if (same) {
             const token = sign({
-                id: dbcheck[0].id,
-                user_name: dbcheck[0].user_name
+                id: dbCheck[0].id,
+                userName: dbCheck[0].userName
             },
             process.env.JWT_SECRET,
             {
@@ -109,27 +109,27 @@ router.post("/login", async (req, res) => {
 
 // 반려견 정보 입력
 router.post("/dogdata", verifyToken, async (req, res) => {
-    const pet_name = req.body.pet_name;
+    const petName = req.body.petName;
     const weight = req.body.weight;
     const age = req.body.age;
-    const dog_breed = req.body.dog_breed;
+    const dogBreed = req.body.dogBreed;
     const note = req.body.note;
-    const user_id = req.decoded.id;
+    const userId = req.decoded.id;
     
     const userIdCheck = await User.findAll({
         where:{
-            id : user_id
+            id : userId
         }
     });
 
     if(userIdCheck.length != 0) {
         const newPet = await Pet.create({
-            pet_name : pet_name,
+            petName : petName,
             age : age,
             weight : weight,
-            dog_breed : dog_breed,
+            dogBreed : dogBreed,
             note : note,
-            user_id : user_id
+            userId : userId
         });
         return res.json({
             data : "강아지 정보가 등록되었습니다."
@@ -145,25 +145,25 @@ router.post("/dogdata", verifyToken, async (req, res) => {
 router.put("/dogdata/:petId", verifyToken, async (req, res) => {
     try {
     const { petId } = req.params;
-    const pet_name = req.body.pet_name;
+    const petName = req.body.petName;
     const weight = req.body.weight;
     const age = req.body.age;
-    const dog_breed = req.body.dog_breed;
+    const dogBreed = req.body.dogBreed;
     const note = req.body.note;
-    const user_id = req.decoded.id;
+    const userId = req.decoded.id;
 
     const petIdCheck = await Pet.findAll({
         where:{
-            user_id : user_id
+            userId : userId
         }
     });
 
     if(petIdCheck.length != 0) {
         const newPet = await Pet.update({
-            pet_name : pet_name,
+            petName : petName,
             age : age,
             weight : weight,
-            dog_breed : dog_breed,
+            dogBreed : dogBreed,
             note : note
         }, {
             where : {

@@ -4,28 +4,28 @@ module.exports = class Shop extends Sequelize.Model{
     static init(sequelize){
         return super.init({
 			
-            shop_name: {
+            shopName: {
                 type: Sequelize.STRING(500)
             },
-            work_time: {
+            workTime: {
                 type: Sequelize.STRING(200)
             },
-            shop_num: {
+            shopNum: {
                 type: Sequelize.STRING(500)
             },
-            designer_num: {
+            designerNum: {
                 type: Sequelize.INTEGER(200)
             },
-            work_name: {
+            workName: {
                 type: Sequelize.STRING(500)
             },
             address: {
                 type: Sequelize.STRING(500)
             },
-            shop_img: {
+            shopImg: {
                 type: Sequelize.STRING(500)
             },
-            user_id: {
+            userId: {
                 type: Sequelize.INTEGER(200)
             }
 		}, {
@@ -39,6 +39,6 @@ module.exports = class Shop extends Sequelize.Model{
         });
     }
     static associate(db){
-        db.Shop.belongsTo(db.User, {foreignKey: 'user_id', targetKey: 'id'});
+        db.Shop.belongsTo(db.User, {foreignKey: 'userId', targetKey: 'id'});
     }
 };
