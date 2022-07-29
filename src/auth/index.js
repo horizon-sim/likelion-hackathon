@@ -63,6 +63,7 @@ router.post("/register", async (req, res) => {
     return res.status(409).json({
         error : "이미 존재하는 아이디 입니다."
     });
+
 });
 
 // 로그인
@@ -176,7 +177,7 @@ router.put("/dogdata/:petId", verifyToken, async (req, res) => {
     }
     catch(error) {
         return res.status(409).json({
-            error : "수정오류"
+            erroe : "수정오류"
         });
     }
     

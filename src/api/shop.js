@@ -98,4 +98,5 @@ router.get("/", async (req, res) => {
         data : shopList
     })
 });
+
 export default router;
