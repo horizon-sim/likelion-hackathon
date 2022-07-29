@@ -4,19 +4,19 @@ module.exports = class Pet extends Sequelize.Model{
     static init(sequelize){
         return super.init({
 			
-            user_id: {
+            userId: {
                 type: Sequelize.INTEGER(200)
             },
-            dog_breed: {
+            dogBreed: {
                 type: Sequelize.STRING(500)
             },
             age: {
                 type: Sequelize.INTEGER(200)
             },
-            pet_name: {
+            petName: {
                 type: Sequelize.STRING(500)
             },
-            pet_img: {
+            petImg: {
                 type: Sequelize.STRING(500)
             },
             weight: {
@@ -36,6 +36,6 @@ module.exports = class Pet extends Sequelize.Model{
         });
     }
     static associate(db){
-        db.Pet.belongsTo(db.User, {foreignKey: 'user_id', targetKey: 'id'});
+        db.Pet.belongsTo(db.User, {foreignKey: 'userId', targetKey: 'id'});
     }
 };
