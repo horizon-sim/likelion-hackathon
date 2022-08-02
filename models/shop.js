@@ -40,5 +40,6 @@ module.exports = class Shop extends Sequelize.Model{
     }
     static associate(db){
         db.Shop.belongsTo(db.User, {foreignKey: 'userId', targetKey: 'id'});
+        db.Shop.hasOne(db.Order, {foreignKey: 'shopId', sourceKey: 'id'});
     }
 };

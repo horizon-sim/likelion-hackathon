@@ -33,7 +33,8 @@ module.exports = class User extends Sequelize.Model{
         });
     }
     static associate(db){
-        db.User.hasMany(db.Pet, {foreignKey: 'userId', targetKey: 'id'});
-        db.User.hasMany(db.Shop, {foreignKey: 'userId', targetKey: 'id'});
+        db.User.hasMany(db.Pet, {foreignKey: 'userId', sourceKey: 'id'});
+        db.User.hasMany(db.Shop, {foreignKey: 'userId', sourceKey: 'id'});
+        db.User.hasMany(db.Order, {foreignKey: 'userId', sourceKey: 'id'});
     }
 };
