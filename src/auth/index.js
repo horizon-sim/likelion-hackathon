@@ -60,7 +60,9 @@ router.post("/register", upload.single("petimg"), async (req, res) => {
             password : bypassword,
             phoneNum : phoneNum,
             email : email,
-            isOwner : isOwner
+            isOwner : isOwner,
+            coordinateX : 10.123,
+            coordinateY : 123.121
         });
         const newPet = await Pet.create({
             petName : petName,

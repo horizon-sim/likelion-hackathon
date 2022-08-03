@@ -21,6 +21,12 @@ module.exports = class User extends Sequelize.Model{
             },
             isOwner: {
                 type: Sequelize.BOOLEAN(1)
+            },
+            coordinateX: {
+                type: Sequelize.FLOAT(50)
+            },
+            coordinateY: {
+                type: Sequelize.FLOAT(50)
             }
 		}, {
             sequelize,

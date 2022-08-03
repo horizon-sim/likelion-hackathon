@@ -10,7 +10,7 @@ const router = express.Router();
 //     const shop_name = req.body.shop_name;
 // });
 
-// 지점(상세정보 데이터 넣기)
+// 지점 정보 저장
 router.post("/", verifyToken, async (req, res) => {
     const shopName = req.body.shopName;
     const workTime = req.body.workTime;//영업시간
@@ -29,17 +29,93 @@ router.post("/", verifyToken, async (req, res) => {
     });
 
     const newShop = await Shop.create({
-        shop_name : req.body.shop_name,
-        work_time : req.body.work_time,
-        shop_num : req.body.shop_num,
-        designer_num : req.body.designer_num,
-        work_name : req.body.work_name,
-        address : req.body.address,
+        shopName : shopName,
+        workTime : workTime,
+        shopNum : shopNum,
+        designerNum : designerNum,
+        workName : workName,
+        address : address,
         userId : userId
     });
     return res.json({
         data : "지점이 등록되었습니다."
     });
+});
+
+//지점 정보 수정
+router.put("/:shopId", verifyToken, async (req, res) => {
+    try {
+        const { shopId } = req.params;
+        const shopName = req.body.shopName;
+        const workTime = req.body.workTime;
+        const shopNum = req.body.shopNum;
+        const designerNum = req.body.designerNum;
+        const workName = req.body.workName;
+        const address = req.body.address;
+        const shopImg = req.body.shopImg;
+        const userId = req.decoded.id;
+
+
+        const shopIdCheck = await Shop.findAll({
+            where:{
+                userId : userId
+            }
+        });
+
+        if(shopIdCheck.length != 0) {
+            const newShop = await Shop.update({
+                shopName : shopName,
+                workTime : workTime,
+                shopNum : shopNum,
+                designerNum : designerNum,
+                workName : workName,
+                address : address
+            }, {
+                where : {
+                    id : shopIdCheck[parseInt(shopId)-1].id
+                }
+            });
+            return res.json({
+                data : "가게 정보가 수정되었습니다."
+            });
+        };
+    }
+    catch(error) {
+        return res.status(409).json({
+            error : "수정오류"
+        });
+    }
+    
+});
+
+// 지점 정보 삭제
+router.delete("/:shopId", verifyToken, async (req, res) => {
+    try {
+        const { shopId } = req.params;
+        const userId = req.decoded.id;
+
+        const shopIdCheck = await Shop.findAll({
+            where:{
+                userId : userId
+            }
+        });
+
+        if(shopIdCheck.length != 0) {
+            const newShop = await Shop.destroy({
+                where : {
+                    id : shopIdCheck[parseInt(shopId)-1].id
+                }
+            });
+            return res.json({
+                data : "가게 정보가 삭제되었습니다."
+            });
+        };
+    }
+    catch(error) {
+        return res.status(409).json({
+            error : "삭제오류"
+        });
+    }
 });
 
 // 특정 지점 확인

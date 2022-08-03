@@ -85,11 +85,6 @@ router.put("/:petId", verifyToken, async (req, res) => {
 router.delete("/:petId", verifyToken, async (req, res) => {
     try {
         const { petId } = req.params;
-        const petName = req.body.petName;
-        const weight = req.body.weight;
-        const age = req.body.age;
-        const dogBreed = req.body.dogBreed;
-        const note = req.body.note;
         const userId = req.decoded.id;
 
         const petIdCheck = await Pet.findAll({

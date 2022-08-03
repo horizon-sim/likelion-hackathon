@@ -27,6 +27,12 @@ module.exports = class Shop extends Sequelize.Model{
             },
             userId: {
                 type: Sequelize.INTEGER(200)
+            },
+            coordinateX: {
+                type: Sequelize.FLOAT(50)
+            },
+            coordinateY: {
+                type: Sequelize.FLOAT(50)
             }
 		}, {
             sequelize,
