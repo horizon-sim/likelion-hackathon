@@ -35,7 +35,9 @@ router.post("/", verifyToken, async (req, res) => {
         designerNum : designerNum,
         workName : workName,
         address : address,
-        userId : userId
+        userId : userId,
+        coordinateX : 102.123212,
+        coordinateY : 123.12312
     });
     return res.json({
         data : "지점이 등록되었습니다."

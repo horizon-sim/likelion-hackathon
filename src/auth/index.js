@@ -4,7 +4,6 @@ import { Pet } from '../../models';
 import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import emailsame from "./emailsame";
-import fs from "fs";
 import path from "path";
 import multer from "multer";
 
