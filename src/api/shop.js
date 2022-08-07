@@ -2,6 +2,8 @@ import express from "express";
 import { verifyToken } from "../auth/token";
 import { User } from '../../models';
 import { Shop } from '../../models';
+import multer from "multer";
+import path from "path";
 
 const router = express.Router();
 
@@ -10,15 +12,29 @@ const router = express.Router();
 //     const shop_name = req.body.shop_name;
 // });
 
+// 지점 사진 추가
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req, file, done) { // 저장 위치
+            done(null, 'img/'); // uploads라는 폴더 안에 저장
+        },
+        filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
+            const ext = path.extname(file.originalname); // 파일의 확장자
+            done(null, path.basename(file.originalname, ext) + Date.now() + ext); // 파일이름 + 날짜 + 확장자 이름으로 저장
+        }
+    }),
+    limits: { fileSize: 5 * 1024 * 1024 } 
+});
+
 // 지점 정보 저장
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", verifyToken, upload.single("shopimg"), async (req, res) => {
     const shopName = req.body.shopName;
     const workTime = req.body.workTime;//영업시간
     const shopNum = req.body.shopNum;//shop 전화번호
     const designerNum = req.body.designerNum;//디자이너 몇명인지
     const workName = req.body.workName; // 사업자
     const address = req.body.address;
-    // const shop_img = req.body.shop_img;
+    const shopImg = req.file == undefined ? "": req.file.path;
     const userId = req.decoded.id;
 
     
@@ -35,16 +51,17 @@ router.post("/", verifyToken, async (req, res) => {
         designerNum : designerNum,
         workName : workName,
         address : address,
+        shopImg : shopImg,
         userId : userId,
-        coordinateX : 102.123212,
-        coordinateY : 123.12312
+        coordinateX : 37.2227,
+        coordinateY : 127.1902
     });
     return res.json({
         data : "지점이 등록되었습니다."
     });
 });
 
-//지점 정보 수정
+//지점 정보 수정 (보류 - 마이페이지)
 router.put("/:shopId", verifyToken, async (req, res) => {
     try {
         const { shopId } = req.params;
@@ -90,7 +107,7 @@ router.put("/:shopId", verifyToken, async (req, res) => {
     
 });
 
-// 지점 정보 삭제
+// 지점 정보 삭제 (보류 - 마이페이지)
 router.delete("/:shopId", verifyToken, async (req, res) => {
     try {
         const { shopId } = req.params;

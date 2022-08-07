@@ -28,21 +28,24 @@ const upload = multer({
 // 회원가입
 router.post("/register", upload.single("petimg"), async (req, res) => {
     
-    // 유저
+   
+
     const userName = req.body.userName;
     const password = req.body.password;
     const phoneNum = req.body.phoneNum;
     const email = req.body.email;
+    
 
-    let isOwner = false;
-
-    // 펫
     const petName = req.body.petName;
     const weight = req.body.weight;
     const age = req.body.age;
     const dogBreed = req.body.dogBreed;
     const note = req.body.note;
+
     const petImg = req.file == undefined ? "": req.file.path;
+ 
+    let isOwner = false;
+
 
     const dbCheck = await User.findAll({
         where:{
@@ -60,8 +63,8 @@ router.post("/register", upload.single("petimg"), async (req, res) => {
             phoneNum : phoneNum,
             email : email,
             isOwner : isOwner,
-            coordinateX : 10.123,
-            coordinateY : 123.121
+            coordinateX : 37.2247,
+            coordinateY : 127.1878
         });
         const newPet = await Pet.create({
             petName : petName,

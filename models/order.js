@@ -7,7 +7,10 @@ module.exports = class Order extends Sequelize.Model{
             userId: {
                 type: Sequelize.INTEGER(200)
             },
-            orderDate: {
+            orderDay: {
+                type: Sequelize.STRING(500)
+            },
+            orderTime: {
                 type: Sequelize.STRING(500)
             },
             petId: {

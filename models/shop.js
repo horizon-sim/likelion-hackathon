@@ -10,6 +10,9 @@ module.exports = class Shop extends Sequelize.Model{
             workTime: {
                 type: Sequelize.STRING(200)
             },
+            workHoly: {
+                type: Sequelize.STRING(200)
+            },
             shopNum: {
                 type: Sequelize.STRING(500)
             },
