@@ -11,7 +11,7 @@ module.exports = class Pet extends Sequelize.Model{
                 type: Sequelize.STRING(500)
             },
             age: {
-                type: Sequelize.INTEGER(200)
+                type: Sequelize.STRING(500)
             },
             petName: {
                 type: Sequelize.STRING(500)
@@ -20,7 +20,7 @@ module.exports = class Pet extends Sequelize.Model{
                 type: Sequelize.STRING(500)
             },
             weight: {
-                type: Sequelize.FLOAT(30)
+                type: Sequelize.STRING(500)
             },
             note: {
                 type: Sequelize.STRING(500)

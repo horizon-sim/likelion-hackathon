@@ -25,8 +25,9 @@ function getDistance(lat1,lon1,lat2,lon2) {
   }
 
 // 거리에 따른 지점 좌표 보내주기 좌표 계산 (get)
-router.get("/shopdis", verifyToken, async (req, res) => {
-    // try {
+// 메인화면, 검색 노출
+router.get("/shop-dis", verifyToken, async (req, res) => {
+    try {
         const userId = req.decoded.id;
 
         const userCoorCheck = await User.findAll({
@@ -48,7 +49,7 @@ router.get("/shopdis", verifyToken, async (req, res) => {
                 let shopPosY = shopCoorCheck[i].coordinateY;
                 console.log(getDistance(userPosX, userPosY, shopPosX, shopPosY));
                 let distance = getDistance(userPosX, userPosY, shopPosX, shopPosY)
-                if (distance < 1) {
+                if (distance < 5) {
                     shopdisList.push(shopCoorCheck[i])
                 }
             }
@@ -58,12 +59,12 @@ router.get("/shopdis", verifyToken, async (req, res) => {
             })
         };
 
-    // }
-    // catch(error) {
-    //     return res.status(409).json({
-    //         error : "좌표저장 오류"
-    //     });
-    // }
+    }
+    catch(error) {
+        return res.status(400).json({
+            error : "GET요청 오류"
+        });
+    }
     
 });
 
