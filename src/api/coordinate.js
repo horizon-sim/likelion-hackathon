@@ -81,6 +81,7 @@ router.put("/shop", verifyToken, async (req, res) => {
             }
         });
         
+
         if(shopIdCheck.length != 0) {
             const putUserCoordinate = await Shop.update({
                 coordinateX : coordinateX,
