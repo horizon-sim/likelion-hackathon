@@ -28,12 +28,14 @@ const upload = multer({
 
 // 지점 정보 저장
 router.post("/", verifyToken, upload.single("shopimg"), async (req, res) => {
-    const shopName = req.body.shopName;
+    const shopName = req.body.shopName;//가게 이름
+    const intro = req.body.intro;//소개
     const workTime = req.body.workTime;//영업시간
+    const workHoly = req.body.workHoly;//휴무일
     const shopNum = req.body.shopNum;//shop 전화번호
-    const designerNum = req.body.designerNum;//디자이너 몇명인지
     const workName = req.body.workName; // 사업자
-    const address = req.body.address;
+    const address = req.body.address;//주소
+    const parking = req.body.parking;//주차
     const shopImg = req.file == undefined ? "": req.file.path;
     const userId = req.decoded.id;
 
@@ -46,11 +48,13 @@ router.post("/", verifyToken, upload.single("shopimg"), async (req, res) => {
 
     const newShop = await Shop.create({
         shopName : shopName,
+        intro : intro,
         workTime : workTime,
+        workHoly : workHoly,
         shopNum : shopNum,
-        designerNum : designerNum,
         workName : workName,
         address : address,
+        parking : parking,
         shopImg : shopImg,
         userId : userId,
         coordinateX : 37.2227,
@@ -65,12 +69,13 @@ router.post("/", verifyToken, upload.single("shopimg"), async (req, res) => {
 router.put("/:shopId", verifyToken, async (req, res) => {
     try {
         const { shopId } = req.params;
+        const intro = req.body.intro;
         const shopName = req.body.shopName;
         const workTime = req.body.workTime;
         const shopNum = req.body.shopNum;
-        const designerNum = req.body.designerNum;
         const workName = req.body.workName;
         const address = req.body.address;
+        const parking = req.body.parking;
         const shopImg = req.body.shopImg;
         const userId = req.decoded.id;
 
@@ -84,10 +89,11 @@ router.put("/:shopId", verifyToken, async (req, res) => {
         if(shopIdCheck.length != 0) {
             const newShop = await Shop.update({
                 shopName : shopName,
+                intro : intro,
                 workTime : workTime,
                 shopNum : shopNum,
-                designerNum : designerNum,
                 workName : workName,
+                parking : parking,
                 address : address
             }, {
                 where : {
@@ -181,7 +187,7 @@ router.delete("/:shopId", verifyToken, async (req, res) => {
 router.get("/", async (req, res) => {
 
     const shopList = await Shop.findAll({
-        attributes: ["shopName", "workTime", "shopNum", "address", "shopImg"]
+        attributes: ["shopName", "intro", "workTime", "workHoly", "shopNum", "address", "parking", "shopImg"]
     });
 
     if (shopList.length == 0) {
