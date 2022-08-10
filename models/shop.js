@@ -7,6 +7,9 @@ module.exports = class Shop extends Sequelize.Model{
             shopName: {
                 type: Sequelize.STRING(500)
             },
+            intro: {
+                type: Sequelize.STRING(500)
+            },
             workTime: {
                 type: Sequelize.STRING(200)
             },
@@ -16,13 +19,13 @@ module.exports = class Shop extends Sequelize.Model{
             shopNum: {
                 type: Sequelize.STRING(500)
             },
-            designerNum: {
-                type: Sequelize.INTEGER(200)
-            },
             workName: {
                 type: Sequelize.STRING(500)
             },
             address: {
+                type: Sequelize.STRING(500)
+            },
+            parking: {
                 type: Sequelize.STRING(500)
             },
             shopImg: {
