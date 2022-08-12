@@ -11,7 +11,7 @@ module.exports = class Service extends Sequelize.Model{
                 type: Sequelize.STRING(500)
             },
             amount: {
-                type: Sequelize.STRING(500)
+                type: Sequelize.INTEGER(200)
             }
 		}, {
             sequelize,
