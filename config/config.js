@@ -1,7 +1,10 @@
-{
+const dotenv = require("dotenv");
+dotenv.config();
+
+const envList  = {
   "development": {
     "username": "root",
-    "password": "Gustj9337!",
+    "password": process.env.PASSWORD,
     "database": "hack",
     "host": "127.0.0.1",
     "dialect": "mysql"
@@ -21,3 +24,4 @@
     "dialect": "mysql"
   }
 }
+module.exports = envList;

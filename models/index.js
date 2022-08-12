@@ -5,11 +5,11 @@ const Shop = require("./shop");
 const Order = require("./order");
 const Reserve = require("./reserve");
 const Service = require("./service");
-
 const env = process.env.NODE_ENV || "development";
 const config = require("../config/config")[env];
 const db = {};
 
+console.log(config);
 const sequelize = new Sequelize( //config의 db정보와 연결
   config.database,
   config.username,
@@ -41,3 +41,4 @@ Reserve.associate(db);
 Service.associate(db);
 
 module.exports = db;
+
