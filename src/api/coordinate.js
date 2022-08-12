@@ -26,7 +26,7 @@ function getDistance(lat1,lon1,lat2,lon2) {
 
 // 거리에 따른 지점 좌표 보내주기 좌표 계산 (get)
 // 메인화면, 검색 노출
-router.get("/shop-dis", verifyToken, async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
     try {
         const userId = req.decoded.id;
 
