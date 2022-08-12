@@ -7,9 +7,9 @@ module.exports = class Reserve extends Sequelize.Model{
             shopId: {
                 type: Sequelize.INTEGER(200)
             },
-            time: {
-                type: Sequelize.STRING(500)
-            }
+            noDate: {
+                type: Sequelize.DATE(6)
+            },
 		}, {
             sequelize,
             timestamps: false,

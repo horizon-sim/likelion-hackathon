@@ -7,11 +7,8 @@ module.exports = class Order extends Sequelize.Model{
             userId: {
                 type: Sequelize.INTEGER(200)
             },
-            orderDay: {
-                type: Sequelize.STRING(500)
-            },
-            orderTime: {
-                type: Sequelize.STRING(500)
+            orderDate: {
+                type: Sequelize.DATE(6)
             },
             petId: {
                 type: Sequelize.INTEGER(200)
@@ -24,6 +21,12 @@ module.exports = class Order extends Sequelize.Model{
             },
             shopName: {
                 type: Sequelize.STRING(500)
+            },
+            serviceName: {
+                type: Sequelize.STRING(500)
+            },
+            amount: {
+                type: Sequelize.INTEGER(200)
             }
 		}, {
             sequelize,
