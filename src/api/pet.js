@@ -2,6 +2,7 @@ import express from "express";
 import { verifyToken } from "../auth/token";
 import { User } from '../../models';
 import { Pet } from '../../models';
+import { Order } from '../../models';
 import multer from "multer";
 import path from "path";
 
@@ -152,10 +153,37 @@ router.get("/main", verifyToken, async (req, res) => {
             }
         });
 
+        const orderData = await Order.findAll({
+            attributes: ["shopName"],
+            where:{
+                userId : userId
+            }
+        });
+        let data = [];
+        for (let i = 0; i < petData.length; i++ ) {
+            let pushData = { 
+                petName : null,
+                petImg : null,
+                shopName : null
+            };
+
+            if(orderData[i] != undefined) {
+                pushData.petName = petData[i].petName;
+                pushData.petImg = petData[i].petImg;
+                pushData.shopName = orderData[i].shopName;
+                data.push(pushData);
+            }
+            else if(orderData[i] == undefined) {
+                pushData.petName = petData[i].petName;
+                pushData.petImg = petData[i].petImg;
+                data.push(pushData);
+            }
+        };
         return res.json({
-            data : petData
+            data : data
         });
     };
+    
 
     return res.status(400).json({
         error : "GET 요청 오류"
