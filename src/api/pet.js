@@ -13,17 +13,13 @@ dotenv.config();
 
 const router = express.Router();
 
-// aws.config.update({
-//     "accessKeyId": process.env.S3KEY,
-//     "secretAccessKey": process.env.S3SECRETKEY,
-//     "region": "ap-northeast-2"
-// });
-
-const s3 = new aws.S3({
+aws.config.update({
     "accessKeyId": process.env.S3KEY,
     "secretAccessKey": process.env.S3SECRETKEY,
     "region": "ap-northeast-2"
 });
+
+const s3 = new aws.S3();
 // 반려견 사진 추가
 const upload = multer({
     storage: multerS3({
