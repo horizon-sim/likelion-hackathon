@@ -134,8 +134,17 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
                     data : "예약 완료"
                 });
             }
+            return res.json({
+                error : "지점의 서비스 내역이 존재하지 않습니다."
+            });
         }
+        return res.json({
+            error : "해당 지점 존재하지 않습니다."
+        });
     }
+    return res.json({
+        error : "해당 강아지가 존재하지 않습니다."
+    });
     
 });
 
