@@ -3,21 +3,43 @@ import { verifyToken } from "../auth/token";
 import { User } from '../../models';
 import { Pet } from '../../models';
 import { Order } from '../../models';
+import multerS3 from "multer-s3";
+import aws from "aws-sdk";
 import multer from "multer";
 import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const router = express.Router();
 
+// aws.config.update({
+//     "accessKeyId": process.env.S3KEY,
+//     "secretAccessKey": process.env.S3SECRETKEY,
+//     "region": "ap-northeast-2"
+// });
+
+const s3 = new aws.S3({
+    "accessKeyId": process.env.S3KEY,
+    "secretAccessKey": process.env.S3SECRETKEY,
+    "region": "ap-northeast-2"
+});
 // 반려견 사진 추가
 const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, done) { // 저장 위치
-            done(null, 'img/'); // uploads라는 폴더 안에 저장
-        },
-        filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
-            const ext = path.extname(file.originalname); // 파일의 확장자
-            done(null, path.basename(file.originalname, ext) + Date.now() + ext); // 파일이름 + 날짜 + 확장자 이름으로 저장
+    storage: multerS3({
+        s3: s3,
+        bucket : 'dangmes3',
+        acl: 'public-read-write',
+        // destination(req, file, done) { // 저장 위치
+        //     done(null, 'img/'); // uploads라는 폴더 안에 저장
+        // },
+        key: function(req, file, cb){
+            cb(null, Date.now() + '.' + file.originalname.split('.').pop()); // 이름 설정
         }
+        // filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
+        //     const ext = path.extname(file.originalname); // 파일의 확장자
+        //     done(null, path.basename(file.originalname, ext) + Date.now() + ext); // 파일이름 + 날짜 + 확장자 이름으로 저장
+        // }
     }),
     limits: { fileSize: 5 * 1024 * 1024 } 
 });
@@ -147,7 +169,7 @@ router.get("/main", verifyToken, async (req, res) => {
 
     if(userIdCheck.length != 0) {
         const petData = await Pet.findAll({
-            attributes: ["petName", "petImg"],
+            attributes: ["petName", "petImg", "id"],
             where:{
                 userId : userId
             }
@@ -162,18 +184,21 @@ router.get("/main", verifyToken, async (req, res) => {
         let data = [];
         for (let i = 0; i < petData.length; i++ ) {
             let pushData = { 
+                id : null,
                 petName : null,
                 petImg : null,
                 shopName : null
             };
 
             if(orderData[i] != undefined) {
+                pushData.id = petData[i].id;
                 pushData.petName = petData[i].petName;
                 pushData.petImg = petData[i].petImg;
                 pushData.shopName = orderData[i].shopName;
                 data.push(pushData);
             }
             else if(orderData[i] == undefined) {
+                pushData.id = petData[i].id;
                 pushData.petName = petData[i].petName;
                 pushData.petImg = petData[i].petImg;
                 data.push(pushData);
