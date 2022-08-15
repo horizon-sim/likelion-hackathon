@@ -50,7 +50,7 @@ router.post("/", verifyToken, upload.single("petimg"), async (req, res) => {
     const note = req.body.note;
     const userId = req.decoded.id;
 
-    const petImg = req.file == undefined ? "": req.file.path;
+    const petImg = req.file == undefined ? "": req.file.fieldname;
 
     const userIdCheck = await User.findAll({
         where:{

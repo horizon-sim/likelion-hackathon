@@ -4,23 +4,40 @@ import { Pet } from '../../models';
 import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import emailsame from "./emailsame";
-import path from "path";
 import multer from "multer";
+import multerS3 from "multer-s3";
+import aws from "aws-sdk";
+import path from "path";
+import dotenv from "dotenv";
 
 const router = express.Router();
 
 router.use("/emailsame", emailsame);
 
 // 반려견 사진 추가
+aws.config.update({
+    "accessKeyId": process.env.S3KEY,
+    "secretAccessKey": process.env.S3SECRETKEY,
+    "region": "ap-northeast-2"
+});
+
+const s3 = new aws.S3();
+
 const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, done) { // 저장 위치
-            done(null, 'img/'); // uploads라는 폴더 안에 저장
-        },
-        filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
-            const ext = path.extname(file.originalname); // 파일의 확장자
-            done(null, path.basename(file.originalname, ext) + Date.now() + ext); // 파일이름 + 날짜 + 확장자 이름으로 저장
+    storage: multerS3({
+        s3: s3,
+        bucket : 'dangmes3',
+        acl: 'public-read-write',
+        // destination(req, file, done) { // 저장 위치
+        //     done(null, 'img/'); // uploads라는 폴더 안에 저장
+        // },
+        key: function(req, file, cb){
+            cb(null, Date.now() + '.' + file.originalname.split('.').pop()); // 이름 설정
         }
+        // filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
+        //     const ext = path.extname(file.originalname); // 파일의 확장자
+        //     done(null, path.basename(file.originalname, ext) + Date.now() + ext); // 파일이름 + 날짜 + 확장자 이름으로 저장
+        // }
     }),
     limits: { fileSize: 5 * 1024 * 1024 } 
 });
@@ -42,7 +59,7 @@ router.post("/register", upload.single("petimg"), async (req, res) => {
     const dogBreed = req.body.dogBreed;
     const note = req.body.note;
 
-    const petImg = req.file == undefined ? "": req.file.path;
+    const petImg = req.file == undefined ? "": req.file.location;
  
     let isOwner = false;
 
