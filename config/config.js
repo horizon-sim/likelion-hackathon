@@ -22,11 +22,6 @@ const envList  = {
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql"
-  },
-  "s3List" : {
-    "accessKeyId": process.env.S3KEY,
-    "secretAccessKey": process.env.S3SECRETKEY,
-    "region": "ap-northeast-2"
-}
+  }
 }
 module.exports = envList;
