@@ -20,22 +20,15 @@ aws.config.update({
 });
 
 const s3 = new aws.S3();
-// 반려견 사진 추가
+
 const upload = multer({
     storage: multerS3({
         s3: s3,
         bucket : 'dangmes3',
         acl: 'public-read-write',
-        // destination(req, file, done) { // 저장 위치
-        //     done(null, 'img/'); // uploads라는 폴더 안에 저장
-        // },
         key: function(req, file, cb){
             cb(null, Date.now() + '.' + file.originalname.split('.').pop()); // 이름 설정
         }
-        // filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
-        //     const ext = path.extname(file.originalname); // 파일의 확장자
-        //     done(null, path.basename(file.originalname, ext) + Date.now() + ext); // 파일이름 + 날짜 + 확장자 이름으로 저장
-        // }
     }),
     limits: { fileSize: 5 * 1024 * 1024 } 
 });
@@ -105,7 +98,7 @@ router.put("/:petId", verifyToken, async (req, res) => {
                 note : note
             }, {
                 where : {
-                    id : petIdCheck[parseInt(petId)-1].id
+                    id : parseInt(petId)
                 }
             });
             return res.json({
@@ -136,7 +129,7 @@ router.delete("/:petId", verifyToken, async (req, res) => {
         if(petIdCheck.length != 0) {
             const newPet = await Pet.destroy({
                 where : {
-                    id : petIdCheck[parseInt(petId)-1].id
+                    id : parseInt(petId)
                 }
             });
             return res.json({

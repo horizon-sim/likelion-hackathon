@@ -28,16 +28,9 @@ const upload = multer({
         s3: s3,
         bucket : 'dangmes3',
         acl: 'public-read-write',
-        // destination(req, file, done) { // 저장 위치
-        //     done(null, 'img/'); // uploads라는 폴더 안에 저장
-        // },
         key: function(req, file, cb){
             cb(null, Date.now() + '.' + file.originalname.split('.').pop()); // 이름 설정
         }
-        // filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
-        //     const ext = path.extname(file.originalname); // 파일의 확장자
-        //     done(null, path.basename(file.originalname, ext) + Date.now() + ext); // 파일이름 + 날짜 + 확장자 이름으로 저장
-        // }
     }),
     limits: { fileSize: 5 * 1024 * 1024 } 
 });
@@ -45,14 +38,11 @@ const upload = multer({
 // 회원가입
 router.post("/register", upload.single("petimg"), async (req, res) => {
     
-   
-
     const userName = req.body.userName;
     const password = req.body.password;
     const phoneNum = req.body.phoneNum;
     const email = req.body.email;
     
-
     const petName = req.body.petName;
     const weight = req.body.weight;
     const age = req.body.age;
@@ -62,7 +52,6 @@ router.post("/register", upload.single("petimg"), async (req, res) => {
     const petImg = req.file == undefined ? "": req.file.location;
  
     let isOwner = false;
-
 
     const dbCheck = await User.findAll({
         where:{

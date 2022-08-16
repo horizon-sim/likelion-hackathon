@@ -123,8 +123,8 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
                 const newOrder = await Order.create({
                     userId : userId,
                     orderDate : orderDate,
-                    petId : petIdCheck[parseInt(petId)-1].id,
-                    petName : petIdCheck[parseInt(petId)-1].petName,
+                    petId : parseInt(petId),
+                    petName : parseInt(petId),
                     shopId : shopId,
                     shopName : shopIdCheck[0].shopName,
                     serviceName : serviceName,
@@ -134,19 +134,70 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
                     data : "예약 완료"
                 });
             }
-            return res.json({
-                error : "지점의 서비스 내역이 존재하지 않습니다."
-            });
         }
-        return res.json({
+        return res.status(409).json({
             error : "해당 지점 존재하지 않습니다."
         });
     }
-    return res.json({
+    return res.status(409).json({
         error : "해당 강아지가 존재하지 않습니다."
     });
-    
 });
+
+// 예약 - 시간노출
+// router.get("/:shopId/:petId", verifyToken, async (req, res) => {
+    
+//     const userId = req.decoded.id;
+//     const { shopId } = req.params;
+//     const { petId } = req.params;
+
+//     const petIdCheck = await Pet.findAll({
+//         where:{
+//             userId : userId
+//         }
+//     });
+
+//     const shopIdCheck = await Shop.findAll({
+//         where:{
+//             id : shopId
+//         }
+//     });
+
+//     if(petIdCheck.length != 0) {
+//         if(shopIdCheck.length != 0) {
+//             const reserveIdCheck = await Reserve.findAll({
+//                 where:{
+//                     shopId : shopId
+//                 }
+//             });
+
+//             if(reserveIdCheck.length != 0) {
+                
+//                 const newOrder = await Order.create({
+//                     userId : userId,
+//                     orderDate : orderDate,
+//                     petId : parseInt(petId),
+//                     petName : parseInt(petId),
+//                     shopId : shopId,
+//                     shopName : shopIdCheck[0].shopName,
+//                     serviceName : serviceName,
+//                     amount : amount
+//                 });
+//                 return res.json({
+//                     data : "예약 완료"
+//                 });
+//             }
+//         }
+        
+//         return res.status(409).json({
+//             error : "해당 지점 존재하지 않습니다."
+//         });
+//     }
+
+//     return res.status(409).json({
+//         error : "해당 강아지가 존재하지 않습니다."
+//     });
+// });
 
 // 예약 - 예약내역 노출
 router.get("/", verifyToken, async (req, res) => {

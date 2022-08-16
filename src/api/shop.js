@@ -4,6 +4,9 @@ import { User } from '../../models';
 import { Shop } from '../../models';
 import multer from "multer";
 import path from "path";
+import multerS3 from "multer-s3";
+import aws from "aws-sdk";
+import dotenv from "dotenv";
 
 const router = express.Router();
 
@@ -13,14 +16,22 @@ const router = express.Router();
 // });
 
 // 지점 사진 추가
+// 반려견 사진 추가
+aws.config.update({
+    "accessKeyId": process.env.S3KEY,
+    "secretAccessKey": process.env.S3SECRETKEY,
+    "region": "ap-northeast-2"
+});
+
+const s3 = new aws.S3();
+
 const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, done) { // 저장 위치
-            done(null, 'img/'); // uploads라는 폴더 안에 저장
-        },
-        filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
-            const ext = path.extname(file.originalname); // 파일의 확장자
-            done(null, path.basename(file.originalname, ext) + Date.now() + ext); // 파일이름 + 날짜 + 확장자 이름으로 저장
+    storage: multerS3({
+        s3: s3,
+        bucket : 'dangmes3',
+        acl: 'public-read-write',
+        key: function(req, file, cb){
+            cb(null, Date.now() + '.' + file.originalname.split('.').pop()); // 이름 설정
         }
     }),
     limits: { fileSize: 5 * 1024 * 1024 } 
@@ -36,7 +47,7 @@ router.post("/", verifyToken, upload.single("shopimg"), async (req, res) => {
     const workName = req.body.workName; // 사업자
     const address = req.body.address;//주소
     const parking = req.body.parking;//주차
-    const shopImg = req.file == undefined ? "": req.file.path;
+    const shopImg = req.file == undefined ? "": req.file.location;
     const userId = req.decoded.id;
 
     
@@ -97,7 +108,7 @@ router.put("/:shopId", verifyToken, async (req, res) => {
                 address : address
             }, {
                 where : {
-                    id : shopIdCheck[parseInt(shopId)-1].id
+                    id : parseInt(shopId)
                 }
             });
             return res.json({
@@ -128,7 +139,7 @@ router.delete("/:shopId", verifyToken, async (req, res) => {
         if(shopIdCheck.length != 0) {
             const newShop = await Shop.destroy({
                 where : {
-                    id : shopIdCheck[parseInt(shopId)-1].id
+                    id : parseInt(shopId)
                 }
             });
             return res.json({
