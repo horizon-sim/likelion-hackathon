@@ -192,7 +192,6 @@ router.get("/main", verifyToken, async (req, res) => {
                 pushData.id = petData[i].id;
                 pushData.petName = petData[i].petName;
                 pushData.petImg = petData[i].petImg;
-                pushData.orderDate = orderData[i].orderDate;
                 data.push(pushData);
             }
         };

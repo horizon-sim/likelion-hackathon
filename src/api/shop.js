@@ -165,7 +165,7 @@ router.delete("/:shopId", verifyToken, async (req, res) => {
 //     // const shop_img = req.body.shop_img;
 //     const user_id = req.decoded.id;
 
-    
+
 //     const userIdCheck = await User.findAll({
 //         where:{
 //             id : user_id
