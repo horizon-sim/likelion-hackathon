@@ -5,6 +5,7 @@ import { Reserve } from '../../models';
 import { Shop } from '../../models';
 import { Pet } from '../../models';
 import { Order } from '../../models';
+import { getMonth, getDate, add } from "date-fns";
 
 const router = express.Router();
 
@@ -90,7 +91,7 @@ router.get("/:shopId", async (req, res) => {
 });
 
 // 예약 - 예약내역 저장
-router.post("/:shopId/:petId", verifyToken, async (req, res) => {
+router.post("/complete/:shopId/:petId", verifyToken, async (req, res) => {
     
     const userId = req.decoded.id;
     const { shopId } = req.params;
@@ -144,60 +145,58 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
     });
 });
 
-// 예약 - 시간노출
-// router.get("/:shopId/:petId", verifyToken, async (req, res) => {
-    
-//     const userId = req.decoded.id;
-//     const { shopId } = req.params;
-//     const { petId } = req.params;
 
-//     const petIdCheck = await Pet.findAll({
-//         where:{
-//             userId : userId
-//         }
-//     });
+// 예약 - 예약 안되는 시간 보내기
+router.post("/:shopId/:petId", verifyToken, async (req, res) => {
 
-//     const shopIdCheck = await Shop.findAll({
-//         where:{
-//             id : shopId
-//         }
-//     });
+    const userId = req.decoded.id;
+    const { shopId } = req.params;
+    const { petId } = req.params;
+    const month = req.body.month;
+    const day = req.body.day;
 
-//     if(petIdCheck.length != 0) {
-//         if(shopIdCheck.length != 0) {
-//             const reserveIdCheck = await Reserve.findAll({
-//                 where:{
-//                     shopId : shopId
-//                 }
-//             });
+    const shopIdCheck = await Shop.findAll({
+        where:{
+            id : shopId
+        }
+    });
 
-//             if(reserveIdCheck.length != 0) {
+    const orderCheck = await Order.findAll({
+        attributes: ["orderDate"],
+        where:{
+            shopId : shopId
+        }
+    });
+    let haveDate = [];
+
+    if(shopIdCheck.length != 0) {
+        if(orderCheck.length != 0){
+            for(let i = 0; i < orderCheck.length; i++) {
+                let addDate = add(orderCheck[i].orderDate, {
+                    days: 30
+                })
+
+                let serverMonth = getMonth(addDate);
+                let serverDay = getDate(addDate);
                 
-//                 const newOrder = await Order.create({
-//                     userId : userId,
-//                     orderDate : orderDate,
-//                     petId : parseInt(petId),
-//                     petName : parseInt(petId),
-//                     shopId : shopId,
-//                     shopName : shopIdCheck[0].shopName,
-//                     serviceName : serviceName,
-//                     amount : amount
-//                 });
-//                 return res.json({
-//                     data : "예약 완료"
-//                 });
-//             }
-//         }
-        
-//         return res.status(409).json({
-//             error : "해당 지점 존재하지 않습니다."
-//         });
-//     }
+                if (month == serverMonth && day == serverDay) {
+                    haveDate.push(orderCheck[i].orderDate);
+                }
+            }
+            return res.json({
+                data : haveDate 
+            });
+        }
+        return res.status(409).json({
+            error : "shop의 id가 일치하지 않습니다."
+        });
+    }
 
-//     return res.status(409).json({
-//         error : "해당 강아지가 존재하지 않습니다."
-//     });
-// });
+    return res.status(409).json({
+        error : "해당시간은 예약이 불가합니다."
+    });
+
+});
 
 // 예약 - 예약내역 노출
 router.get("/", verifyToken, async (req, res) => {

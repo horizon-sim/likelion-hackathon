@@ -165,7 +165,7 @@ router.get("/main", verifyToken, async (req, res) => {
         });
 
         const orderData = await Order.findAll({
-            attributes: ["shopName"],
+            attributes: ["shopName", "orderDate"],
             where:{
                 userId : userId
             }
@@ -176,7 +176,8 @@ router.get("/main", verifyToken, async (req, res) => {
                 id : null,
                 petName : null,
                 petImg : null,
-                shopName : null
+                shopName : null,
+                orderDate : null
             };
 
             if(orderData[i] != undefined) {
@@ -184,12 +185,14 @@ router.get("/main", verifyToken, async (req, res) => {
                 pushData.petName = petData[i].petName;
                 pushData.petImg = petData[i].petImg;
                 pushData.shopName = orderData[i].shopName;
+                pushData.orderDate = orderData[i].orderDate;
                 data.push(pushData);
             }
             else if(orderData[i] == undefined) {
                 pushData.id = petData[i].id;
                 pushData.petName = petData[i].petName;
                 pushData.petImg = petData[i].petImg;
+                pushData.orderDate = orderData[i].orderDate;
                 data.push(pushData);
             }
         };
