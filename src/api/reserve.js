@@ -112,11 +112,15 @@ router.post("/complete/:shopId/:petId", verifyToken, async (req, res) => {
         }
     });
 
+    let addDate = add(orderDate, {
+        hours: 9
+    })
+
     if(petIdCheck.length != 0) {
         if(shopIdCheck.length != 0) {
                 const newOrder = await Order.create({
                     userId : userId,
-                    orderDate : orderDate,
+                    orderDate : addDate,
                     petId : parseInt(petId),
                     petName : parseInt(petId),
                     shopId : shopId,
