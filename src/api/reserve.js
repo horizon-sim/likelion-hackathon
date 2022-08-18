@@ -112,18 +112,18 @@ router.post("/complete/:shopId/:petId", verifyToken, async (req, res) => {
         }
     });
 
-    let preDate = new Date(orderDate);
-    let addDate = add(preDate, {
-        hours: 9
-    })
-    let formatDate = format(addDate, "yyyy-mm-dd HH:mm:ss");
-    console.log(formatDate);
-    
+    // let preDate = new Date(orderDate);
+    // let addDate = add(preDate, {
+    //     hours: 9
+    // })
+    // let formatDate = format(addDate, "yyyy-mm-dd HH:mm:ss");
+    // console.log(formatDate);
+
     if(petIdCheck.length != 0) {
         if(shopIdCheck.length != 0) {
                 const newOrder = await Order.create({
                     userId : userId,
-                    orderDate : formatDate,
+                    orderDate : orderDate,
                     petId : parseInt(petId),
                     petName : parseInt(petId),
                     shopId : shopId,
