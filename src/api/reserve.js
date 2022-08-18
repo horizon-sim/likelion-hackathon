@@ -160,6 +160,7 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
         if(orderCheck.length != 0){
             for(let i = 0; i < orderCheck.length; i++) {
                 let addDate = add(orderCheck[i].orderDate, {
+                    months: 1,
                     hours: 9
                 })
 
