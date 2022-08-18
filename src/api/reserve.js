@@ -136,11 +136,11 @@ router.post("/complete/:shopId/:petId", verifyToken, async (req, res) => {
                 });
             }
         }
-        return res.status(409).json({
+        return res.json({
             error : "해당 지점 존재하지 않습니다."
         });
     }
-    return res.status(409).json({
+    return res.json({
         error : "해당 강아지가 존재하지 않습니다."
     });
 });
