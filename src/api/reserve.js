@@ -114,13 +114,6 @@ router.post("/complete/:shopId/:petId", verifyToken, async (req, res) => {
 
     if(petIdCheck.length != 0) {
         if(shopIdCheck.length != 0) {
-            const reserveIdCheck = await Reserve.findAll({
-                where:{
-                    shopId : shopId
-                }
-            });
-            if(reserveIdCheck.length != 0) {
-                
                 const newOrder = await Order.create({
                     userId : userId,
                     orderDate : orderDate,
@@ -134,15 +127,9 @@ router.post("/complete/:shopId/:petId", verifyToken, async (req, res) => {
                 return res.json({
                     data : "예약 완료"
                 });
-            }
+            
         }
-        return res.json({
-            error : "해당 지점 존재하지 않습니다."
-        });
     }
-    return res.json({
-        error : "해당 강아지가 존재하지 않습니다."
-    });
 });
 
 
