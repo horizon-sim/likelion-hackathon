@@ -47,7 +47,6 @@ router.get("/", verifyToken, async (req, res) => {
             for(let i = 0; i < shopCoorCheck.length; i++) {
                 let shopPosX = shopCoorCheck[i].coordinateX;
                 let shopPosY = shopCoorCheck[i].coordinateY;
-                console.log(getDistance(userPosX, userPosY, shopPosX, shopPosY));
                 let distance = getDistance(userPosX, userPosY, shopPosX, shopPosY)
                 if (distance < 5) {
                     shopdisList.push(shopCoorCheck[i])

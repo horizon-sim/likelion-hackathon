@@ -187,8 +187,8 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
                 data : haveDate 
             });
         }
-        return res.status(409).json({
-            error : "shop의 id가 일치하지 않습니다."
+        return res.json({
+            data : "예약이 가능합니다."
         });
     }
 
