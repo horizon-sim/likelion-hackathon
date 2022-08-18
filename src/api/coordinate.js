@@ -69,15 +69,16 @@ router.get("/", verifyToken, async (req, res) => {
 });
 
 // 지점 좌표 저장
-router.put("/shop", verifyToken, async (req, res) => {
+router.put("/shop/:shopId", verifyToken, async (req, res) => {
     try {
+        const { shopId } = req.params;
         const coordinateX = req.body.coordinateX;
         const coordinateY = req.body.coordinateY;
         const userId = req.decoded.id;
 
         const shopIdCheck = await Shop.findAll({
             where:{
-                userId : userId
+                id : shopId
             }
         });
         

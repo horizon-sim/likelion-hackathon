@@ -149,7 +149,7 @@ router.delete("/:petId", verifyToken, async (req, res) => {
 router.get("/main", verifyToken, async (req, res) => {
     
     const userId = req.decoded.id;
-
+    
     const userIdCheck = await User.findAll({
         where:{
             id : userId
