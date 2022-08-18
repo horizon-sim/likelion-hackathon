@@ -89,7 +89,7 @@ router.put("/shop/:shopId", verifyToken, async (req, res) => {
                 coordinateY : coordinateY
             }, {
                 where : {
-                    userId : userId
+                    id : parseInt(shopId)
                 }
             });
             return res.json({

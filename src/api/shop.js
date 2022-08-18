@@ -80,14 +80,14 @@ router.post("/", verifyToken, upload.single("shopimg"), async (req, res) => {
 router.put("/:shopId", verifyToken, async (req, res) => {
     try {
         const { shopId } = req.params;
-        const intro = req.body.intro;
-        const shopName = req.body.shopName;
-        const workTime = req.body.workTime;
-        const shopNum = req.body.shopNum;
-        const workName = req.body.workName;
-        const address = req.body.address;
-        const parking = req.body.parking;
-        const shopImg = req.body.shopImg;
+        const shopName = req.body.shopName;//가게 이름
+        const intro = req.body.intro;//소개
+        const workTime = req.body.workTime;//영업시간
+        const workHoly = req.body.workHoly;//휴무일
+        const shopNum = req.body.shopNum;//shop 전화번호
+        const workName = req.body.workName; // 사업자
+        const address = req.body.address;//주소
+        const parking = req.body.parking;//주차
         const userId = req.decoded.id;
 
 
@@ -102,6 +102,7 @@ router.put("/:shopId", verifyToken, async (req, res) => {
                 shopName : shopName,
                 intro : intro,
                 workTime : workTime,
+                workHoly : workHoly,
                 shopNum : shopNum,
                 workName : workName,
                 parking : parking,
