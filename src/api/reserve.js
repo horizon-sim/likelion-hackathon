@@ -112,12 +112,6 @@ router.post("/complete/:shopId/:petId", verifyToken, async (req, res) => {
         }
     });
 
-    // let preDate = new Date(orderDate);
-    // let addDate = add(preDate, {
-    //     hours: 9
-    // })
-    // let formatDate = format(addDate, "yyyy-mm-dd HH:mm:ss");
-    // console.log(formatDate);
 
     if(petIdCheck.length != 0) {
         if(shopIdCheck.length != 0) {
@@ -181,9 +175,10 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
                 console.log("------------");
                                 
                 if (month == serverMonth && day == serverDay) {
-                    haveDate.push(orderCheck[i].orderDate);
+                    haveDate.push(addDate);
                 }
             }
+            
             return res.json({
                 data : haveDate 
             });
