@@ -160,11 +160,14 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
         if(orderCheck.length != 0){
             for(let i = 0; i < orderCheck.length; i++) {
                 let addDate = add(orderCheck[i].orderDate, {
-                    days: 30
+                    days: 30,
+                    hours: 9
                 })
 
                 let serverMonth = getMonth(addDate);
                 let serverDay = getDate(addDate);
+                console.log(orderCheck)
+                console.log(addDate)
                 console.log(serverMonth);
                 console.log(serverDay);
                 console.log(month);
