@@ -5,7 +5,7 @@ import { Reserve } from '../../models';
 import { Shop } from '../../models';
 import { Pet } from '../../models';
 import { Order } from '../../models';
-import { getMonth, getDate, add } from "date-fns";
+import { getMonth, getDate, add, format } from "date-fns";
 
 const router = express.Router();
 
@@ -112,15 +112,17 @@ router.post("/complete/:shopId/:petId", verifyToken, async (req, res) => {
         }
     });
 
-    let addDate = add(orderDate, {
+    let preDate = new Date(orderDate);
+    let addDate = add(preDate, {
         hours: 9
     })
+    let formatDate = format(addDate, "yyyy-mm-dd HH:mm:ss");
 
     if(petIdCheck.length != 0) {
         if(shopIdCheck.length != 0) {
                 const newOrder = await Order.create({
                     userId : userId,
-                    orderDate : addDate,
+                    orderDate : formatDate,
                     petId : parseInt(petId),
                     petName : parseInt(petId),
                     shopId : shopId,
