@@ -25,12 +25,12 @@ router.get("/:shopId", verifyToken, async (req, res) => {
         const returnData = [];
         workTime.map((noDate, index) => {
             console.log(noDate.noDate);
-            const month1 = getMonth(add(noDate.noDate, {hours: -9, months: 1}));
+            const month1 = getMonth(add(noDate.noDate, {hours: 9, months: 1}));
             const day1 = getDate(add(noDate.noDate, {hours: 9}));
             console.log(month1,month, day1, day);
             if(month1 == month && day1 == day){
                 returnData.push(getHours(add(noDate.noDate, {
-                    hours: -9
+                    hours: 9
                 })))
             };
         });
