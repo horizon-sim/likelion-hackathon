@@ -19,8 +19,8 @@ router.get("/:shopId", verifyToken, async (req, res) => {
   if (shopIdCheck.length != 0) {
     console.log(dateData);
 
-    const workTime = await Reserve.findAll({
-      attributes: ["noDate"],
+    const workTime = await Order.findAll({
+      attributes: ["orderDate"],
       raw: "true",
     });
 
