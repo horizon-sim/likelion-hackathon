@@ -177,7 +177,11 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
                     haveDate.push(addPushDate);
                 }
             }
-            
+            // let havDateObject = [
+            //     {workTime : []},
+            //     {workTime : []}
+            // ];
+
             return res.json({
                 data : haveDate 
             });
@@ -211,5 +215,4 @@ router.get("/", verifyToken, async (req, res) => {
 });
 
 export default router;
-
 
