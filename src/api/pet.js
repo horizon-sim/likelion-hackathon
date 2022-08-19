@@ -168,7 +168,8 @@ router.get("/main", verifyToken, async (req, res) => {
             attributes: ["shopName", "orderDate"],
             where:{
                 userId : userId
-            }
+            },
+            raw: 'true'
         });
         
         let data = [];
