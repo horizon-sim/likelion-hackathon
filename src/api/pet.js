@@ -172,6 +172,7 @@ router.get("/main", verifyToken, async (req, res) => {
             raw: 'true'
         });
         
+        
         let data = [];
         for (let i = 0; i < petData.length; i++ ) {
             let pushData = { 
@@ -182,14 +183,16 @@ router.get("/main", verifyToken, async (req, res) => {
                 orderDate : null
             };
             
-            let preParsingDate = new Date(orderData[i].orderDate);
-            let parsingDate = add(preParsingDate, {
+            
+            
+            if(orderData[i] != undefined) {
+                let preParsingDate = new Date(orderData[i].orderDate);
+                let parsingDate = add(preParsingDate, {
                 hours: 9
             });
             
-            let parsingPushDate = format(parsingDate, "MM/dd HH:mm")
-            
-            if(orderData[i] != undefined) {
+                let parsingPushDate = format(parsingDate, "MM/dd HH:mm")
+
                 pushData.id = petData[i].id;
                 pushData.petName = petData[i].petName;
                 pushData.petImg = petData[i].petImg;
