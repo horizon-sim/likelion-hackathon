@@ -6,8 +6,8 @@ import { Order } from '../../models';
 import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 import multer from "multer";
-import path from "path";
 import dotenv from "dotenv";
+import { getMonth, getDate, add, format } from "date-fns";
 
 dotenv.config();
 
@@ -170,6 +170,7 @@ router.get("/main", verifyToken, async (req, res) => {
                 userId : userId
             }
         });
+        
         let data = [];
         for (let i = 0; i < petData.length; i++ ) {
             let pushData = { 
@@ -179,13 +180,21 @@ router.get("/main", verifyToken, async (req, res) => {
                 shopName : null,
                 orderDate : null
             };
-
+            
+            let preParsingDate = new Date(orderData[i].orderDate);
+            let parsingDate = add(preParsingDate, {
+                hours: 9
+            });
+            
+            let parsingPushDate = format(parsingDate, "MM/dd HH:mm")
+            
             if(orderData[i] != undefined) {
                 pushData.id = petData[i].id;
                 pushData.petName = petData[i].petName;
                 pushData.petImg = petData[i].petImg;
                 pushData.shopName = orderData[i].shopName;
-                pushData.orderDate = orderData[i].orderDate;
+                pushData.orderDate = parsingPushDate;
+                
                 data.push(pushData);
             }
             else if(orderData[i] == undefined) {
