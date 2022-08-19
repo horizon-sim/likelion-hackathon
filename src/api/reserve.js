@@ -6,6 +6,7 @@ import { Shop } from '../../models';
 import { Pet } from '../../models';
 import { Order } from '../../models';
 import { getMonth, getDate, add, format } from "date-fns";
+// import model from './model';
 
 const router = express.Router();
 
@@ -176,7 +177,11 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
                     haveDate.push(addPushDate);
                 }
             }
-            
+            // let havDateObject = [
+            //     {workTime : []},
+            //     {workTime : []}
+            // ];
+
             return res.json({
                 data : haveDate 
             });
@@ -210,3 +215,5 @@ router.get("/", verifyToken, async (req, res) => {
 });
 
 export default router;
+
+
