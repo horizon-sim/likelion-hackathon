@@ -72,15 +72,15 @@ router.get("/:shopId/:petId", verifyToken, async (req, res) => {
             let serverMonth = getMonth(addDate);
             let serverDay = getDate(addDate);
             let serverHours = getHours(orderCheck[i].orderDate);
-            // console.log("디비 데이터 : ", orderCheck[i].orderDate);
-            // console.log("수정 데이터1 : ",addDate);
-            // console.log("수정 데이터2 : ",addPushDate);
+            console.log("디비 데이터 : ", orderCheck[i].orderDate);
+            console.log("수정 데이터1 : ",addDate);
+            console.log("수정 데이터2 : ",addPushDate);
             
 
-            // console.log("서버 달 : ",serverMonth);
-            // console.log("서버 일 : ",serverDay);
-            // console.log("서버 시간 : ",serverHours);
-            // console.log("---------------");
+            console.log("서버 달 : ",serverMonth);
+            console.log("서버 일 : ",serverDay);
+            console.log("서버 시간 : ",serverHours);
+            console.log("---------------");
             if (month == serverMonth && day == serverDay) {
                 returnData.push(serverHours);
             }
