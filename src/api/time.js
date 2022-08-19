@@ -65,13 +65,14 @@ router.get("/:shopId/:petId", verifyToken, async (req, res) => {
         for (let i = 0; i < orderCheck.length; i++) {
             let addDate = add(orderCheck[i].orderDate, {
                 months: 1
+
             })
             let addPushDate = add(orderCheck[i].orderDate, {
                 hours: 9
             })
             let serverMonth = getMonth(addDate);
             let serverDay = getDate(addDate);
-            let serverHours = getHours(orderCheck[i].orderDate);
+            let serverHours = getHours(addPushDate);
             console.log("디비 데이터 : ", orderCheck[i].orderDate);
             console.log("수정 데이터1 : ",addDate);
             console.log("수정 데이터2 : ",addPushDate);
