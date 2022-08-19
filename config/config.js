@@ -3,7 +3,7 @@ dotenv.config();
 
 const envList  = {
   "development": {
-    "username": "root",
+    "username": "dangme",
     "password": process.env.PASSWORD,
     "database": "hack",
     "host": "127.0.0.1",
