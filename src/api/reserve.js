@@ -171,13 +171,6 @@ router.post("/:shopId/:petId", verifyToken, async (req, res) => {
 
                 let serverMonth = getMonth(addDate);
                 let serverDay = getDate(addDate);
-                console.log(orderCheck)
-                console.log(addDate)
-                console.log(serverMonth);
-                console.log(serverDay);
-                console.log(month);
-                console.log(day);
-                console.log("------------");
                                 
                 if (month == serverMonth && day == serverDay) {
                     haveDate.push(addPushDate);
